@@ -1,7 +1,7 @@
-const User = require('../models/user');
-const Post = require('../models/post');
-const { cloudinary, UPLOAD_PRESET } = require('../utils/config').default;
-const paginateResults = require('../utils/paginateResults');
+const User = require("../models/user");
+const Post = require("../models/post");
+const config = require("../utils/config");
+const paginateResults = require("../utils/paginateResults");
 
 const getUser = async (req, res) => {
   const { username } = req.params;
@@ -9,7 +9,7 @@ const getUser = async (req, res) => {
   const limit = Number(req.query.limit);
 
   const user = await User.findOne({
-    username: { $regex: new RegExp('^' + username + '$', 'i') },
+    username: { $regex: new RegExp("^" + username + "$", "i") },
   });
 
   if (!user) {
@@ -22,11 +22,11 @@ const getUser = async (req, res) => {
   const paginated = paginateResults(page, limit, postsCount);
   const userPosts = await Post.find({ author: user.id })
     .sort({ createdAt: -1 })
-    .select('-comments')
+    .select("-comments")
     .limit(limit)
     .skip(paginated.startIndex)
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName');
+    .populate("author", "username")
+    .populate("subreddit", "subredditName");
 
   const paginatedPosts = {
     previous: paginated.results.previous,
@@ -43,7 +43,7 @@ const setUserAvatar = async (req, res) => {
   if (!avatarImage) {
     return res
       .status(400)
-      .send({ message: 'Image URL needed for setting avatar.' });
+      .send({ message: "Image URL needed for setting avatar." });
   }
 
   const user = await User.findById(req.user);
@@ -51,13 +51,13 @@ const setUserAvatar = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
-  const uploadedImage = await cloudinary.uploader.upload(
+  const uploadedImage = await config.cloudinary.uploader.upload(
     avatarImage,
     {
-      upload_preset: UPLOAD_PRESET,
+      upload_preset: config.UPLOAD_PRESET,
     },
     (error) => {
       if (error) return res.status(401).send({ message: error.message });
@@ -80,13 +80,13 @@ const removeUserAvatar = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
   user.avatar = {
     exists: false,
-    imageLink: 'null',
-    imageId: 'null',
+    imageLink: "null",
+    imageId: "null",
   };
 
   await user.save();

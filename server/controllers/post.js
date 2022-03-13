@@ -1,9 +1,9 @@
-const Post = require('../models/post');
-const Subreddit = require('../models/subreddit');
-const User = require('../models/user');
-const postTypeValidator = require('../utils/postTypeValidator');
-const { cloudinary, UPLOAD_PRESET } = require('../utils/config').default;
-const paginateResults = require('../utils/paginateResults');
+const Post = require("../models/post");
+const Subreddit = require("../models/subreddit");
+const User = require("../models/user");
+const postTypeValidator = require("../utils/postTypeValidator");
+const config = require("../utils/config");
+const paginateResults = require("../utils/paginateResults");
 
 const getPosts = async (req, res) => {
   const page = Number(req.query.page);
@@ -12,22 +12,22 @@ const getPosts = async (req, res) => {
 
   let sortQuery;
   switch (sortBy) {
-    case 'new':
+    case "new":
       sortQuery = { createdAt: -1 };
       break;
-    case 'top':
+    case "top":
       sortQuery = { pointsCount: -1 };
       break;
-    case 'best':
+    case "best":
       sortQuery = { voteRatio: -1 };
       break;
-    case 'hot':
+    case "hot":
       sortQuery = { hotAlgo: -1 };
       break;
-    case 'controversial':
+    case "controversial":
       sortQuery = { controversialAlgo: -1 };
       break;
-    case 'old':
+    case "old":
       sortQuery = { createdAt: 1 };
       break;
     default:
@@ -38,11 +38,11 @@ const getPosts = async (req, res) => {
   const paginated = paginateResults(page, limit, postsCount);
   const allPosts = await Post.find({})
     .sort(sortQuery)
-    .select('-comments')
+    .select("-comments")
     .limit(limit)
     .skip(paginated.startIndex)
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName');
+    .populate("author", "username")
+    .populate("subreddit", "subredditName");
 
   const paginatedPosts = {
     previous: paginated.results.previous,
@@ -61,7 +61,7 @@ const getSubscribedPosts = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
   const subscribedSubs = await Subreddit.find({
@@ -77,11 +77,11 @@ const getSubscribedPosts = async (req, res) => {
     subreddit: { $in: user.subscribedSubs },
   })
     .sort({ hotAlgo: -1 })
-    .select('-comments')
+    .select("-comments")
     .limit(limit)
     .skip(paginated.startIndex)
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName');
+    .populate("author", "username")
+    .populate("subreddit", "subredditName");
 
   const paginatedPosts = {
     previous: paginated.results.previous,
@@ -102,13 +102,13 @@ const getSearchedPosts = async (req, res) => {
       {
         title: {
           $regex: query,
-          $options: 'i',
+          $options: "i",
         },
       },
       {
         textSubmission: {
           $regex: query,
-          $options: 'i',
+          $options: "i",
         },
       },
     ],
@@ -118,11 +118,11 @@ const getSearchedPosts = async (req, res) => {
   const paginated = paginateResults(page, limit, postsCount);
   const searchedPosts = await Post.find(findQuery)
     .sort({ hotAlgo: -1 })
-    .select('-comments')
+    .select("-comments")
     .limit(limit)
     .skip(paginated.startIndex)
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName');
+    .populate("author", "username")
+    .populate("subreddit", "subredditName");
 
   const paginatedPosts = {
     previous: paginated.results.previous,
@@ -144,10 +144,10 @@ const getPostAndComments = async (req, res) => {
   }
 
   const populatedPost = await post
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName')
-    .populate('comments.commentedBy', 'username')
-    .populate('comments.replies.repliedBy', 'username')
+    .populate("author", "username")
+    .populate("subreddit", "subredditName")
+    .populate("comments.commentedBy", "username")
+    .populate("comments.replies.repliedBy", "username")
     .execPopulate();
 
   res.status(200).json(populatedPost);
@@ -176,7 +176,7 @@ const createNewPost = async (req, res) => {
   if (!author) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
   if (!targetSubreddit) {
@@ -194,11 +194,11 @@ const createNewPost = async (req, res) => {
     ...validatedFields,
   });
 
-  if (postType === 'Image') {
-    const uploadedImage = await cloudinary.uploader.upload(
+  if (postType === "Image") {
+    const uploadedImage = await config.cloudinary.uploader.upload(
       imageSubmission,
       {
-        upload_preset: UPLOAD_PRESET,
+        UPLOAD_PRESET: config.UPLOAD_PRESET,
       },
       (error) => {
         if (error) return res.status(401).send({ message: error.message });
@@ -221,8 +221,8 @@ const createNewPost = async (req, res) => {
   await author.save();
 
   const populatedPost = await savedPost
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName')
+    .populate("author", "username")
+    .populate("subreddit", "subredditName")
     .execPopulate();
 
   res.status(201).json(populatedPost);
@@ -245,11 +245,11 @@ const updatePost = async (req, res) => {
   if (!author) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
   if (post.author.toString() !== author._id.toString()) {
-    return res.status(401).send({ message: 'Access is denied.' });
+    return res.status(401).send({ message: "Access is denied." });
   }
 
   const validatedFields = postTypeValidator(
@@ -260,19 +260,19 @@ const updatePost = async (req, res) => {
   );
 
   switch (post.postType) {
-    case 'Text':
+    case "Text":
       post.textSubmission = validatedFields.textSubmission;
       break;
 
-    case 'Link':
+    case "Link":
       post.linkSubmission = validatedFields.linkSubmission;
       break;
 
-    case 'Image': {
-      const uploadedImage = await cloudinary.uploader.upload(
+    case "Image": {
+      const uploadedImage = await config.cloudinary.uploader.upload(
         imageSubmission,
         {
-          upload_preset: UPLOAD_PRESET,
+          UPLOAD_PRESET: config.UPLOAD_PRESET,
         },
         (error) => {
           if (error) return res.status(401).send({ message: error.message });
@@ -287,17 +287,17 @@ const updatePost = async (req, res) => {
     }
 
     default:
-      return res.status(403).send({ message: 'Invalid post type.' });
+      return res.status(403).send({ message: "Invalid post type." });
   }
 
   post.updatedAt = Date.now();
 
   const savedPost = await post.save();
   const populatedPost = await savedPost
-    .populate('author', 'username')
-    .populate('subreddit', 'subredditName')
-    .populate('comments.commentedBy', 'username')
-    .populate('comments.replies.repliedBy', 'username')
+    .populate("author", "username")
+    .populate("subreddit", "subredditName")
+    .populate("comments.commentedBy", "username")
+    .populate("comments.replies.repliedBy", "username")
     .execPopulate();
 
   res.status(202).json(populatedPost);
@@ -318,11 +318,11 @@ const deletePost = async (req, res) => {
   if (!author) {
     return res
       .status(404)
-      .send({ message: 'User does not exist in database.' });
+      .send({ message: "User does not exist in database." });
   }
 
   if (post.author.toString() !== author._id.toString()) {
-    return res.status(401).send({ message: 'Access is denied.' });
+    return res.status(401).send({ message: "Access is denied." });
   }
 
   const subreddit = await Subreddit.findById(post.subreddit);

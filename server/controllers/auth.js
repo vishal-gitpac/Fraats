@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const { SECRET } = require("../utils/config").default;
+const config = require("../utils/config");
 
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
@@ -26,7 +26,7 @@ const loginUser = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payloadForToken, SECRET);
+  const token = jwt.sign(payloadForToken, config.SECRET);
 
   res.status(200).json({
     token,
@@ -88,7 +88,7 @@ const signupUser = async (req, res) => {
     id: savedUser._id,
   };
 
-  const token = jwt.sign(payloadForToken, SECRET);
+  const token = jwt.sign(payloadForToken, config.SECRET);
 
   res.status(200).json({
     token,
