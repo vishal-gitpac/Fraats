@@ -154,6 +154,7 @@ const getPostAndComments = async (req, res) => {
 };
 
 const createNewPost = async (req, res) => {
+  console.log(1);
   const {
     title,
     subreddit,
@@ -163,6 +164,7 @@ const createNewPost = async (req, res) => {
     imageSubmission,
   } = req.body;
 
+  console.log(2);
   const validatedFields = postTypeValidator(
     postType,
     textSubmission,
@@ -170,21 +172,25 @@ const createNewPost = async (req, res) => {
     imageSubmission
   );
 
+  console.log(3);
   const author = await User.findById(req.user);
   const targetSubreddit = await Subreddit.findById(subreddit);
 
+  console.log(4);
   if (!author) {
     return res
       .status(404)
       .send({ message: "User does not exist in database." });
   }
 
+  console.log(5);
   if (!targetSubreddit) {
     return res.status(404).send({
       message: `Subreddit with ID: '${subreddit}' does not exist in database.`,
     });
   }
 
+  console.log(6);
   const newPost = new Post({
     title,
     subreddit,
@@ -195,6 +201,8 @@ const createNewPost = async (req, res) => {
   });
 
   if (postType === "Image") {
+    console.log(7);
+
     const uploadedImage = await config.cloudinary.uploader.upload(
       imageSubmission,
       {
@@ -211,15 +219,19 @@ const createNewPost = async (req, res) => {
     };
   }
 
+  console.log(8);
   const savedPost = await newPost.save();
 
+  console.log(9);
   targetSubreddit.posts = targetSubreddit.posts.concat(savedPost._id);
   await targetSubreddit.save();
+  console.log(10);
 
   author.posts = author.posts.concat(savedPost._id);
   author.karmaPoints.postKarma++;
   await author.save();
 
+  console.log(11);
   const populatedPost = await savedPost
     .populate("author", "username")
     .populate("subreddit", "subredditName")

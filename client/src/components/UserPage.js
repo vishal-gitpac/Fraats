@@ -26,8 +26,7 @@ const UserPage = () => {
   const classes = useUserPageStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const { username, rollno } = useParams();
-  //const { rollno } =useParams();
+  const { username } = useParams();
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userPage);
   const user = useSelector((state) => state.user);
@@ -46,8 +45,7 @@ const UserPage = () => {
       }
     };
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username][rollno]);
+  }, [dispatch, username]);
 
   if (pageError) {
     return (
@@ -76,13 +74,13 @@ const UserPage = () => {
     createdAt,
     posts,
     totalComments,
-    karmaPoints,
+    // karmaPoints,
   } = userInfo.userDetails;
 
   const handleLoadPosts = async () => {
     try {
       setLoadingMore(true);
-      await dispatch(loadUserPosts(username, page + 1));
+      dispatch(loadUserPosts(username, page + 1));
       setPage((prevState) => prevState + 1);
       setLoadingMore(false);
     } catch (err) {

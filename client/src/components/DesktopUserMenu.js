@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import AuthFormModal from './AuthFormModal';
-import SubFormModal from './SubFormModal';
-import UpdateAvatarModal from './UpdateAvatarModal';
-import DarkModeMenuItem from './DarkModeMenuItem';
-import { getCircularAvatar } from '../utils/cloudinaryTransform';
-import storageService from '../utils/localStorage';
+import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import AuthFormModal from "./AuthFormModal";
+import SubFormModal from "./SubFormModal";
+import UpdateAvatarModal from "./UpdateAvatarModal";
+import DarkModeMenuItem from "./DarkModeMenuItem";
+import { getCircularAvatar } from "../utils/cloudinaryTransform";
+import storageService from "../utils/localStorage";
 
 import {
   Button,
@@ -15,11 +15,10 @@ import {
   Typography,
   ListItemIcon,
   Divider,
-} from '@material-ui/core';
-import { useUserMenuStyles } from '../styles/muiStyles';
-import FilterVintageIcon from '@material-ui/icons/FilterVintage';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+} from "@material-ui/core";
+import { useUserMenuStyles } from "../styles/muiStyles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 const DesktopUserMenu = ({ user, handleLogout }) => {
   const classes = useUserMenuStyles();
@@ -44,7 +43,11 @@ const DesktopUserMenu = ({ user, handleLogout }) => {
     <div>
       {loggedUser ? (
         <>
-          <Button onClick={handleMenu} color="inherit" className={classes.userBtn}>
+          <Button
+            onClick={handleMenu}
+            color="inherit"
+            className={classes.userBtn}
+          >
             {loggedUser?.avatar?.exists ? (
               <Avatar
                 alt={loggedUser.username}
@@ -67,13 +70,13 @@ const DesktopUserMenu = ({ user, handleLogout }) => {
           <Menu
             anchorEl={anchorEl}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
+              vertical: "top",
+              horizontal: "right",
             }}
             keepMounted
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
+              vertical: "top",
+              horizontal: "right",
             }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
