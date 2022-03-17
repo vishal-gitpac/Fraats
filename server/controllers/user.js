@@ -54,24 +54,22 @@ const setUserAvatar = async (req, res) => {
       .send({ message: "User does not exist in database." });
   }
 
-  const uploadedImage = await config.cloudinary.uploader.upload(
-    avatarImage,
-    {
-      upload_preset: config.UPLOAD_PRESET,
-    },
-    (error) => {
-      if (error) return res.status(401).send({ message: error.message });
-    }
-  );
+  try {
+    const uploadedImage = await config.cloudinary.uploader.upload(avatarImage, {
+      folder: "fraats",
+    });
 
-  user.avatar = {
-    exists: true,
-    imageLink: uploadedImage.url,
-    imageId: uploadedImage.public_id,
-  };
+    user.avatar = {
+      exists: true,
+      imageLink: uploadedImage.url,
+      imageId: uploadedImage.public_id,
+    };
 
-  const savedUser = await user.save();
-  res.status(201).json({ avatar: savedUser.avatar });
+    const savedUser = await user.save();
+    res.status(201).json({ avatar: savedUser.avatar });
+  } catch (err) {
+    res.status(400).json({ err });
+  }
 };
 
 const removeUserAvatar = async (req, res) => {
