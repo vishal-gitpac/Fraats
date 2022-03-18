@@ -144,7 +144,7 @@ const UserPage = () => {
                   <strong>IIITDM</strong>
                 </Typography>
                 <Typography variant="body1" color="secondary">
-                  Roll no {Roll}
+                  ROLL NO : {Roll}
                 </Typography>
                 <Typography variant="body1" color="secondary">
                   .
@@ -178,7 +178,7 @@ const UserPage = () => {
             <div className={classes.noPosts}>
               <PersonIcon color="primary" fontSize="large" />
               <Typography variant="h5" color="secondary">
-                <strong>u/{userName}</strong> has not made any posts yet
+                <strong>{userName}</strong> has not made any posts yet
               </Typography>
             </div>
           )}

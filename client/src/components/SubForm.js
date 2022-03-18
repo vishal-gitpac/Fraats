@@ -7,11 +7,13 @@ import AlertMessage from "./AlertMessage";
 // import * as yup from "yup";
 import getErrorMsg from "../utils/getErrorMsg";
 import { TextField } from "@material-ui/core";
-
+import MobileUserMenu from "./MobileUserMenu";
 import { useSubredditFormStyles } from "../styles/muiStyles";
 import { Button, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import AddIcon from "@material-ui/icons/Add";
+import { useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@material-ui/core";
 
 // const validationSchema = yup.object({
 //   subredditName: yup
@@ -33,6 +35,8 @@ import AddIcon from "@material-ui/icons/Add";
 const SubForm = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useSubredditFormStyles();
   const history = useHistory();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -63,7 +67,7 @@ const SubForm = () => {
           color="primary"
           variant="h5"
         >
-          r/
+          f/
         </Typography>
         <TextField
           name="subfraatName"
@@ -97,41 +101,83 @@ const SubForm = () => {
           }}
         />
       </div>
-      <Button
-        color="secondary"
-        variant="contained"
-        size="large"
-        className={classes.submitButton}
-        disabled={isSubmitting}
-        startIcon={<AddIcon />}
-        onClick={async () => {
-          if (data.subredditName.trim() === "") {
-            return dispatch(notify("Subredit name required", "error"));
-          }
-          if (data.description.trim() === "") {
-            return dispatch(notify("Description is required", "error"));
-          }
+      {isMobile ? (
+        <>
+          <Button
+            color="secondary"
+            variant="contained"
+            size="large"
+            className={classes.submitButton}
+            disabled={isSubmitting}
+            startIcon={<AddIcon />}
+            onClick={async () => {
+              if (data.subredditName.trim() === "") {
+                return dispatch(notify("Subredit name required", "error"));
+              }
+              if (data.description.trim() === "") {
+                return dispatch(notify("Description is required", "error"));
+              }
 
-          try {
-            setIsSubmitting(true);
-            await dispatch(addNewSub(data));
-            dispatch(
-              notify(
-                `New subreddish created: r/${data.subredditName}`,
-                "success"
-              )
-            );
-            history.push(`/r/${data.subredditName}`);
-          } catch (err) {
-            console.error(err);
-            console.error(err.message);
-            dispatch(notify(getErrorMsg(err), "error"));
-          }
-          setIsSubmitting(false);
-        }}
-      >
-        {isSubmitting ? "Creating" : "Create SubFraat"}
-      </Button>
+              try {
+                setIsSubmitting(true);
+                await dispatch(addNewSub(data));
+                dispatch(
+                  notify(
+                    `New subreddish created: r/${data.subredditName}`,
+                    "success"
+                  )
+                );
+                history.push(`/r/${data.subredditName}`);
+              } catch (err) {
+                console.error(err);
+                console.error(err.message);
+                dispatch(notify(getErrorMsg(err), "error"));
+              }
+              setIsSubmitting(false);
+            }}
+          >
+            {isSubmitting ? "Creating" : "Create SubFraat"}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            color="secondary"
+            variant="contained"
+            size="large"
+            className={classes.submitbutton}
+            disabled={isSubmitting}
+            startIcon={<AddIcon />}
+            onClick={async () => {
+              if (data.subredditName.trim() === "") {
+                return dispatch(notify("Subredit name required", "error"));
+              }
+              if (data.description.trim() === "") {
+                return dispatch(notify("Description is required", "error"));
+              }
+
+              try {
+                setIsSubmitting(true);
+                await dispatch(addNewSub(data));
+                dispatch(
+                  notify(
+                    `New subreddish created: r/${data.subredditName}`,
+                    "success"
+                  )
+                );
+                history.push(`/r/${data.subredditName}`);
+              } catch (err) {
+                console.error(err);
+                console.error(err.message);
+                dispatch(notify(getErrorMsg(err), "error"));
+              }
+              setIsSubmitting(false);
+            }}
+          >
+            {isSubmitting ? "Creating" : "Create SubFraat"}
+          </Button>
+        </>
+      )}
       <AlertMessage
         error={error}
         severity="error"

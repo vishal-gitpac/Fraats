@@ -60,11 +60,9 @@ const DesktopUserMenu = ({ user, handleLogout }) => {
                 {loggedUser.username[0]}
               </Avatar>
             )}
-            <div className="">
+            <div className={classes.user}>
               <Typography color="initial">{loggedUser.username}</Typography>
-              <Typography color="initial" className={classes.karmaWrapper}>
-                IIITDM
-              </Typography>
+              <Typography color="initial">IIITDM</Typography>
             </div>
           </Button>
           <Menu

@@ -165,6 +165,8 @@ export const useDialogStyles = makeStyles(
   (theme) => ({
     dialogWrapper: {
       padding: 0,
+      width: "40em",
+      //marginLeft: "10em",
       overflow: "hidden",
       [theme.breakpoints.down("xs")]: {
         padding: 0,
@@ -175,12 +177,12 @@ export const useDialogStyles = makeStyles(
       width: "auto",
       borderRadius: 0,
       marginBottom: 10,
-      //marginLeft: '10em',
+      //marginLeft: "20em",
       padding: 6,
       alignItems: "center",
     },
     createBtn: {
-      //width:'15em',
+      //width: "10em",
       marginLeft: 8,
       textTransform: "none",
       justifyContent: "flex-start",
@@ -226,7 +228,7 @@ export const useAlertStyles = makeStyles(
 export const usePostListStyles = makeStyles(
   (theme) => ({
     root: {
-      //marginLeft: '10em',
+      //marginLeft: "10em",
       width: "100%",
       marginBottom: "1em",
     },
@@ -246,6 +248,11 @@ export const usePostListStyles = makeStyles(
       textAlign: "center",
       marginTop: "12em",
       marginBottom: "6em",
+    },
+    tabs: {
+      display: "flex",
+      alignItems: "center",
+      alignSelf: "center",
     },
   }),
   { index: 1 }
@@ -321,6 +328,7 @@ export const usePostFormStyles = makeStyles(
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
+      //alignItems: "center",
       paddingLeft: 20,
       paddingRight: 20,
       paddingBottom: 20,
@@ -337,10 +345,15 @@ export const usePostFormStyles = makeStyles(
     },
     submitButton: {
       marginTop: "1.8em",
+      width: "15em",
+      display: "flex",
+      alignSelf: "center",
+      //marginLeft: "10em",
     },
     input: {
       display: "flex",
       alignItems: "flex-end",
+      //width: "30em",
       marginTop: "0.7em",
     },
     inputIcon: {
@@ -355,6 +368,11 @@ export const usePostFormStyles = makeStyles(
     },
     typeBtnGroup: {
       marginBottom: 5,
+      width: "20em",
+      display: "flex",
+      alignSelf: "center",
+      //justifyContent: "center",
+      //marginLeft: "8em",
     },
     imageInput: {
       marginTop: "1em",
@@ -378,6 +396,7 @@ export const usePostFormStyles = makeStyles(
       display: "flex",
       alignItems: "flex-end",
       marginTop: "1.5em",
+      //width: "30em",
     },
   }),
   { index: 1 }
@@ -627,7 +646,7 @@ export const useUserPostCardStyles = makeStyles(
     },
     title: {
       fontWeight: 500,
-      marginBottom: "0.7em",
+      marginBottom: "0.2em",
       //backgroundColor: '#48096a',
     },
     imagePost: {
@@ -650,6 +669,9 @@ export const useUserPostCardStyles = makeStyles(
     },
     commentsBtn: {
       marginTop: "0.5em",
+    },
+    downvote: {
+      transform: [{ rotate: "180deg" }],
     },
   }),
   { index: 1 }
@@ -699,7 +721,7 @@ export const useSubPageStyles = makeStyles(
       alignItems: "flex-end",
       flexWrap: "wrap",
       margin: "0.3em 0",
-      maxWidth: 300,
+      //maxWidth: 300,
       [theme.breakpoints.down("xs")]: {
         justifyContent: "center",
       },
@@ -741,10 +763,21 @@ export const useSortTabStyles = makeStyles(
   (theme) => ({
     mainPaper: {
       borderRadius: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      //marginLeft: "5em",
       marginBottom: "0.6em",
       [theme.breakpoints.down("xs")]: {
         marginBottom: "0em",
       },
+    },
+    tabs: {
+      display: "flex",
+      alignSelf: "center",
+      alignItems: "center",
+      justifyContent: "center",
+      //marginLeft: "10em",
     },
   }),
   { index: 1 }
@@ -833,8 +866,26 @@ export const useSubredditFormStyles = makeStyles(
       },
     },
     submitButton: {
+      display: "flex",
+      justifyItems: "center",
+      //alignSelf: "center",
+      alignItems: "flex-end",
+      //justifyContent: "center",
+      //alignContent: "center",
       marginTop: "1.8em",
       marginBottom: "0.5em",
+      marginLeft: "3em",
+    },
+    submitbutton: {
+      display: "flex",
+      justifyItems: "center",
+      //alignSelf: "center",
+      alignItems: "flex-end",
+      //justifyContent: "center",
+      //alignContent: "center",
+      marginTop: "1.8em",
+      marginBottom: "0.5em",
+      marginLeft: "12em",
     },
     input: {
       display: "flex",
@@ -890,6 +941,9 @@ export const useUserMenuStyles = makeStyles(
     name: {
       color: "#FFF",
       backgroundColor: "#FFF",
+    },
+    user: {
+      textAlign: "center",
     },
   }),
   { index: 1 }

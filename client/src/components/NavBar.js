@@ -74,8 +74,8 @@ const NavBar = () => {
                       <img
                         src={create}
                         size="large"
-                        width="30"
-                        height="30"
+                        width="25"
+                        height="25"
                         className={classes.Logo}
                       />
                     </Button>
@@ -90,8 +90,8 @@ const NavBar = () => {
                       <img
                         src={games}
                         size="large"
-                        width="35"
-                        height="35"
+                        width="30"
+                        height="30"
                         className={classes.Logo}
                       />
                     </Button>

@@ -1,14 +1,14 @@
-import React from 'react';
-import { ReactComponent as Best } from '../svg/best.svg';
-import { ReactComponent as Hot } from '../svg/hot.svg';
-import { ReactComponent as New } from '../svg/new.svg';
-import { ReactComponent as Top } from '../svg/top.svg';
-import { ReactComponent as Controversial } from '../svg/controversial.svg';
-import { ReactComponent as Old } from '../svg/old.svg';
-import { ReactComponent as Subscribed } from '../svg/subscribed.svg';
+import React from "react";
+import { ReactComponent as Best } from "../svg/best.svg";
+import { ReactComponent as Hot } from "../svg/hot.svg";
+import { ReactComponent as New } from "../svg/new.svg";
+import { ReactComponent as Top } from "../svg/top.svg";
+import { ReactComponent as Controversial } from "../svg/controversial.svg";
+import { ReactComponent as Old } from "../svg/old.svg";
+import { ReactComponent as Subscribed } from "../svg/subscribed.svg";
 
-import { Paper, Tabs, Tab, SvgIcon } from '@material-ui/core';
-import { useSortTabStyles } from '../styles/muiStyles';
+import { Paper, Tabs, Tab, SvgIcon } from "@material-ui/core";
+import { useSortTabStyles } from "../styles/muiStyles";
 
 const SortTabBar = ({ sortBy, handleTabChange, subscribedTab, user }) => {
   const classes = useSortTabStyles();
@@ -22,6 +22,8 @@ const SortTabBar = ({ sortBy, handleTabChange, subscribedTab, user }) => {
         textColor="primary"
         variant="scrollable"
         scrollButtons="auto"
+        className={classes.tabs}
+        //style={{ marginLeft: "12em" }}
       >
         <Tab
           icon={
