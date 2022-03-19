@@ -140,8 +140,8 @@ const PostCard = ({ post, toggleUpvote, toggleDownvote }) => {
         <Typography variant="subtitle2">
           <Typography variant="caption" className={classes.userAndDate}>
             Posted by
-            <Link component={RouterLink} to={`/u/${author.username}`}>
-              {` ${author.username} `}
+            <Link component={RouterLink} to={`/u/${author?.username}`}>
+              {` ${author?.username} `}
             </Link>
             • <TimeAgo datetime={new Date(createdAt)} />
             {createdAt !== updatedAt && (
@@ -150,8 +150,8 @@ const PostCard = ({ post, toggleUpvote, toggleDownvote }) => {
               </em>
             )}{" "}
             •{" "}
-            <Link component={RouterLink} to={`/r/${subreddit.subredditName}`}>
-              {`f/${subreddit.subredditName} `}
+            <Link component={RouterLink} to={`/r/${subreddit?.subredditName}`}>
+              {`f/${subreddit?.subredditName} `}
             </Link>
           </Typography>
         </Typography>
